@@ -1,0 +1,704 @@
+Sure! Here's code for 10 **junior-level frontend tasks** you can practice. Each one is minimal and beginner-friendly, covering core HTML, CSS, and JavaScript concepts.
+
+---
+
+# 1. Responsive Landing Page
+
+```html
+<!-- landing-page.html -->
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>Landing Page</title>
+<style>
+  body {font-family: Arial, sans-serif; margin:0;}
+  header {background:#007bff; color:#fff; padding:1rem;}
+  nav a {color:#fff; margin:0 1rem; text-decoration:none;}
+  .hero {text-align:center; padding:3rem 1rem;}
+  .features {display: flex; flex-wrap: wrap; gap:1rem; justify-content:center; padding:1rem;}
+  .feature-card {flex: 1 1 200px; border: 1px solid #ccc; padding:1rem; border-radius:8px; text-align:center;}
+  footer {background:#333; color:#eee; text-align:center; padding:1rem; margin-top:2rem;}
+  @media(max-width:600px) {
+    .features {flex-direction: column; align-items: center;}
+  }
+</style>
+</head>
+<body>
+<header>
+  <nav>
+    <a href="#">Home</a><a href="#">About</a><a href="#">Services</a><a href="#">Contact</a>
+  </nav>
+</header>
+
+<section class="hero">
+  <h1>Welcome to EcoFoods</h1>
+  <p>Fresh and healthy organic products delivered to your door.</p>
+  <button>Get Started</button>
+</section>
+
+<section class="features">
+  <div class="feature-card">
+    <h3>Organic Produce</h3>
+    <p>100% natural and fresh fruits and vegetables.</p>
+  </div>
+  <div class="feature-card">
+    <h3>Quick Delivery</h3>
+    <p>Fast and reliable delivery service.</p>
+  </div>
+  <div class="feature-card">
+    <h3>Customer Support</h3>
+    <p>We are here to help 24/7.</p>
+  </div>
+</section>
+
+<footer>
+  <p>&copy; 2025 EcoFoods</p>
+</footer>
+</body>
+</html>
+```
+
+---
+
+# 2. Form with Validation
+
+```html
+<!-- form-validation.html -->
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>Form Validation</title>
+<style>
+  body {font-family: Arial; padding:2rem;}
+  form {max-width: 400px; margin:auto;}
+  input, button {width: 100%; padding: 0.5rem; margin:0.5rem 0;}
+  .error {color: red; font-size: 0.9rem;}
+</style>
+</head>
+<body>
+<form id="regForm" novalidate>
+  <input type="text" id="name" placeholder="Full Name" required />
+  <div class="error" id="nameError"></div>
+
+  <input type="email" id="email" placeholder="Email" required />
+  <div class="error" id="emailError"></div>
+
+  <input type="password" id="password" placeholder="Password" required />
+  <div class="error" id="passError"></div>
+
+  <input type="password" id="confirmPassword" placeholder="Confirm Password" required />
+  <div class="error" id="confirmError"></div>
+
+  <button type="submit">Register</button>
+</form>
+
+<script>
+const form = document.getElementById('regForm');
+const nameInput = document.getElementById('name');
+const emailInput = document.getElementById('email');
+const passInput = document.getElementById('password');
+const confirmInput = document.getElementById('confirmPassword');
+
+const nameError = document.getElementById('nameError');
+const emailError = document.getElementById('emailError');
+const passError = document.getElementById('passError');
+const confirmError = document.getElementById('confirmError');
+
+function validateEmail(email) {
+  return /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email);
+}
+
+form.addEventListener('submit', e => {
+  e.preventDefault();
+  let valid = true;
+
+  if (nameInput.value.trim() === '') {
+    nameError.textContent = 'Name is required';
+    valid = false;
+  } else {
+    nameError.textContent = '';
+  }
+
+  if (!validateEmail(emailInput.value)) {
+    emailError.textContent = 'Invalid email';
+    valid = false;
+  } else {
+    emailError.textContent = '';
+  }
+
+  if (passInput.value.length < 6) {
+    passError.textContent = 'Password must be at least 6 characters';
+    valid = false;
+  } else {
+    passError.textContent = '';
+  }
+
+  if (confirmInput.value !== passInput.value) {
+    confirmError.textContent = 'Passwords do not match';
+    valid = false;
+  } else {
+    confirmError.textContent = '';
+  }
+
+  if (valid) {
+    alert('Form submitted successfully!');
+    form.reset();
+  }
+});
+</script>
+</body>
+</html>
+```
+
+---
+
+# 3. To-Do List App
+
+```html
+<!-- todo-app.html -->
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>To-Do App</title>
+<style>
+  body {font-family: Arial; padding:2rem; max-width: 400px; margin:auto;}
+  input {width: 70%; padding: 0.5rem;}
+  button {padding: 0.5rem;}
+  ul {list-style: none; padding: 0;}
+  li {padding: 0.5rem 0; display: flex; justify-content: space-between;}
+  li.completed span {text-decoration: line-through; color: gray;}
+  .remove-btn {background: red; color: white; border: none; padding: 0 0.5rem; cursor: pointer;}
+</style>
+</head>
+<body>
+<h2>My To-Do List</h2>
+<input type="text" id="taskInput" placeholder="Add new task..." />
+<button id="addBtn">Add</button>
+<ul id="taskList"></ul>
+
+<script>
+const taskInput = document.getElementById('taskInput');
+const addBtn = document.getElementById('addBtn');
+const taskList = document.getElementById('taskList');
+
+function createTaskItem(text) {
+  const li = document.createElement('li');
+
+  const span = document.createElement('span');
+  span.textContent = text;
+  span.addEventListener('click', () => {
+    li.classList.toggle('completed');
+  });
+
+  const removeBtn = document.createElement('button');
+  removeBtn.textContent = 'X';
+  removeBtn.classList.add('remove-btn');
+  removeBtn.addEventListener('click', () => {
+    taskList.removeChild(li);
+  });
+
+  li.appendChild(span);
+  li.appendChild(removeBtn);
+  return li;
+}
+
+addBtn.addEventListener('click', () => {
+  const val = taskInput.value.trim();
+  if (val) {
+    const taskItem = createTaskItem(val);
+    taskList.appendChild(taskItem);
+    taskInput.value = '';
+  }
+});
+
+taskInput.addEventListener('keydown', e => {
+  if (e.key === 'Enter') {
+    addBtn.click();
+  }
+});
+</script>
+</body>
+</html>
+```
+
+---
+
+# 4. Responsive Navbar with Hamburger
+
+```html
+<!-- navbar.html -->
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>Responsive Navbar</title>
+<style>
+  * {box-sizing: border-box;}
+  body {font-family: Arial;}
+  nav {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    background: #007bff;
+    color: white;
+    padding: 0.5rem 1rem;
+  }
+  .nav-links {
+    display: flex;
+    gap: 1rem;
+  }
+  .nav-links a {
+    color: white;
+    text-decoration: none;
+  }
+  .hamburger {
+    display: none;
+    flex-direction: column;
+    cursor: pointer;
+  }
+  .hamburger div {
+    width: 25px;
+    height: 3px;
+    background: white;
+    margin: 4px 0;
+  }
+  @media (max-width: 600px) {
+    .nav-links {
+      display: none;
+      flex-direction: column;
+      background: #007bff;
+      position: absolute;
+      top: 50px;
+      left: 0;
+      width: 100%;
+      padding: 1rem 0;
+    }
+    .nav-links.active {
+      display: flex;
+    }
+    .hamburger {
+      display: flex;
+    }
+  }
+</style>
+</head>
+<body>
+<nav>
+  <div>MySite</div>
+  <div class="nav-links" id="navLinks">
+    <a href="#">Home</a>
+    <a href="#">About</a>
+    <a href="#">Services</a>
+    <a href="#">Contact</a>
+  </div>
+  <div class="hamburger" id="hamburger">
+    <div></div>
+    <div></div>
+    <div></div>
+  </div>
+</nav>
+
+<script>
+const hamburger = document.getElementById('hamburger');
+const navLinks = document.getElementById('navLinks');
+
+hamburger.addEventListener('click', () => {
+  navLinks.classList.toggle('active');
+});
+</script>
+</body>
+</html>
+```
+
+---
+
+# 5. Card Layout with Grid or Flexbox
+
+```html
+<!-- card-layout.html -->
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>Card Layout</title>
+<style>
+  body {font-family: Arial; padding: 1rem;}
+  .cards {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+    gap: 1rem;
+  }
+  .card {
+    border: 1px solid #ccc;
+    border-radius: 8px;
+    padding: 1rem;
+    text-align: center;
+    box-shadow: 2px 2px 5px rgba(0,0,0,0.1);
+  }
+  .card h3 {
+    margin-top: 0;
+  }
+</style>
+</head>
+<body>
+
+<h2>Our Services</h2>
+<div class="cards">
+  <div class="card">
+    <h3>Web Design</h3>
+    <p>Beautiful responsive websites.</p>
+    <button>Learn More</button>
+  </div>
+  <div class="card">
+    <h3>SEO Optimization</h3>
+    <p>Boost your website's traffic.</p>
+    <button>Learn More</button>
+  </div>
+  <div class="card">
+    <h3>Marketing</h3>
+    <p>Grow your brand online.</p>
+    <button>Learn More</button>
+  </div>
+  <div class="card">
+    <h3>Support</h3>
+    <p>24/7 customer assistance.</p>
+    <button>Learn More</button>
+  </div>
+</div>
+
+</body>
+</html>
+```
+
+---
+
+# 6. Image Slider
+
+```html
+<!-- image-slider.html -->
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>Image Slider</title>
+<style>
+  body {font-family: Arial; text-align: center; padding: 2rem;}
+  #slider {
+    width: 300px;
+    margin: auto;
+    position: relative;
+  }
+  #slider img {
+    width: 100%;
+    border-radius: 8px;
+  }
+  button {
+    padding: 0.5rem 1rem;
+    margin: 1rem;
+    cursor: pointer;
+  }
+</style>
+</head>
+<body>
+
+<div id="slider">
+  <img src="https://via.placeholder.com/300x200?text=1" alt="Slide 1" />
+</div>
+
+<button id="prev">Prev</button>
+<button id="next">Next</button>
+
+<script>
+const images = [
+  'https://via.placeholder.com/300x200?text=1',
+  'https://via.placeholder.com/300x200?text=2',
+  'https://via.placeholder.com/300x200?text=3'
+];
+
+let current = 0;
+const sliderImg = document.querySelector('#slider img');
+const prevBtn = document.getElementById('prev');
+const nextBtn = document.getElementById('next');
+
+prevBtn.addEventListener('click', () => {
+  current = (current === 0) ? images.length - 1 : current - 1;
+  sliderImg.src = images[current];
+});
+nextBtn.addEventListener('click', () => {
+  current = (current === images.length
+```
+
+
+* 1. ? 0 : current + 1;
+     sliderImg.src = images\[current];
+     });
+
+     </script>
+
+</body>
+</html>
+```
+
+---
+
+# 7. FAQ Accordion
+
+```html
+<!-- faq-accordion.html -->
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>FAQ Accordion</title>
+<style>
+  body {font-family: Arial; max-width: 600px; margin: 2rem auto;}
+  .faq-item {
+    border-bottom: 1px solid #ccc;
+    padding: 1rem 0;
+    cursor: pointer;
+  }
+  .faq-answer {
+    display: none;
+    padding: 0.5rem 0 1rem 0;
+  }
+  .faq-item.active .faq-answer {
+    display: block;
+  }
+</style>
+</head>
+<body>
+
+<h2>Frequently Asked Questions</h2>
+
+<div class="faq-item">
+  <div class="faq-question">What is your return policy?</div>
+  <div class="faq-answer">You can return within 30 days of purchase.</div>
+</div>
+
+<div class="faq-item">
+  <div class="faq-question">Do you offer support?</div>
+  <div class="faq-answer">Yes, 24/7 customer support is available.</div>
+</div>
+
+<div class="faq-item">
+  <div class="faq-question">Where are you located?</div>
+  <div class="faq-answer">We are based in New York City.</div>
+</div>
+
+<script>
+const faqItems = document.querySelectorAll('.faq-item');
+
+faqItems.forEach(item => {
+  item.querySelector('.faq-question').addEventListener('click', () => {
+    faqItems.forEach(i => {
+      if(i !== item) i.classList.remove('active');
+    });
+    item.classList.toggle('active');
+  });
+});
+</script>
+
+</body>
+</html>
+```
+
+---
+
+# 8. Static Portfolio Website
+
+```html
+<!-- portfolio.html -->
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>Portfolio</title>
+<style>
+  body {font-family: Arial; margin: 0; padding: 0;}
+  header {background: #222; color: white; padding: 1rem;}
+  nav a {
+    color: white;
+    margin: 0 1rem;
+    text-decoration: none;
+  }
+  .projects {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 1rem;
+    padding: 1rem;
+  }
+  .project-card {
+    flex: 1 1 300px;
+    border: 1px solid #ccc;
+    border-radius: 8px;
+    overflow: hidden;
+    cursor: pointer;
+    transition: transform 0.3s ease;
+  }
+  .project-card:hover {
+    transform: scale(1.05);
+  }
+  .project-card img {
+    width: 100%;
+  }
+  .project-card h3 {
+    margin: 0.5rem;
+  }
+</style>
+</head>
+<body>
+<header>
+  <nav>
+    <a href="#">Home</a><a href="#">Projects</a><a href="#">Contact</a>
+  </nav>
+</header>
+
+<section class="projects">
+  <div class="project-card">
+    <img src="https://via.placeholder.com/300x200" alt="Project 1" />
+    <h3>Project One</h3>
+  </div>
+  <div class="project-card">
+    <img src="https://via.placeholder.com/300x200" alt="Project 2" />
+    <h3>Project Two</h3>
+  </div>
+  <div class="project-card">
+    <img src="https://via.placeholder.com/300x200" alt="Project 3" />
+    <h3>Project Three</h3>
+  </div>
+</section>
+
+</body>
+</html>
+```
+
+---
+
+# 9. Light/Dark Mode Toggle
+
+```html
+<!-- light-dark-toggle.html -->
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>Light/Dark Mode</title>
+<style>
+  :root {
+    --bg: white;
+    --text: black;
+  }
+  body {
+    background-color: var(--bg);
+    color: var(--text);
+    transition: background-color 0.3s, color 0.3s;
+    font-family: Arial;
+    text-align: center;
+    padding: 2rem;
+  }
+  button {
+    padding: 0.5rem 1rem;
+    font-size: 1rem;
+    cursor: pointer;
+  }
+  body.dark {
+    --bg: #222;
+    --text: #eee;
+  }
+</style>
+</head>
+<body>
+<h1>Light / Dark Mode Toggle</h1>
+<button id="toggle">Switch to Dark Mode</button>
+
+<script>
+const toggleBtn = document.getElementById('toggle');
+toggleBtn.addEventListener('click', () => {
+  document.body.classList.toggle('dark');
+  if(document.body.classList.contains('dark')) {
+    toggleBtn.textContent = 'Switch to Light Mode';
+  } else {
+    toggleBtn.textContent = 'Switch to Dark Mode';
+  }
+});
+</script>
+</body>
+</html>
+```
+
+---
+
+# 10. Build From Screenshot (Simple Example)
+
+```html
+<!-- screenshot-clone.html -->
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>Simple Clone</title>
+<style>
+  body {
+    font-family: Arial;
+    margin: 0;
+    background: #f9f9f9;
+  }
+  header {
+    background: #004080;
+    color: white;
+    padding: 1rem 2rem;
+    text-align: center;
+  }
+  main {
+    max-width: 600px;
+    background: white;
+    margin: 2rem auto;
+    padding: 2rem;
+    border-radius: 8px;
+    box-shadow: 0 0 10px #ccc;
+  }
+  h1 {
+    margin-top: 0;
+  }
+  p {
+    color: #555;
+  }
+  button {
+    background: #004080;
+    color: white;
+    padding: 0.5rem 1rem;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+  }
+</style>
+</head>
+<body>
+<header>
+  <h2>Company Logo</h2>
+</header>
+<main>
+  <h1>Welcome to Our Service</h1>
+  <p>This is a simple landing page clone based on a screenshot.</p>
+  <button>Get Started</button>
+</main>
+</body>
+</html>
+```
+
+---
+
+If you want me to prepare these as individual files zipped up or detailed explanations for any, just ask!
